@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { PokemonsContext } from '../Context/pokemonsContext';
+import { PokemonsContext } from '../Context/PokemonsContext';
 
 //children fait référence à tout ce qui est wrap par PokemonsProvider dans App.jsx
 export const PokemonsProvider = ({ children }) => {

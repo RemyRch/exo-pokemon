@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
-import { colours } from "../constants/ColorsType";
-import { TypeIcons } from "./TypeIcons";
-import { Fairy } from "../assets/All";
-import * as typeIcon from "../assets/type-icons";
+import { colours } from "../../constants/ColorsType";
+import { TypeIcons } from "./../type-icons/TypeIcons";
+import { PokemonWiki } from "./../pokemon-wiki/PokemonWiki";
 
 export default function PokemonCard(props) {
-  const { id, gif } = props;
-
-  console.log(typeIcon);
+  const { id, wiki } = props;
 
   const [pokemon, setPokemon] = useState([]);
   const [bgColor, setBgColor] = useState("");
+  const [bgImg, setBgImg] = useState("");
 
   const [sourceImg, setSourceImg] = useState("");
   const [orientation, setOrientation] = useState("front_default");
@@ -27,7 +25,8 @@ export default function PokemonCard(props) {
 
         //on set le background-color en fonction du type dans ColorsType
         setBgColor(colours[firstType]);
-
+        // setBgImg(typeIcon[firstType]);
+        // console.log(typeIcon.bug)
       });
   }, [id]);
 
@@ -38,7 +37,7 @@ export default function PokemonCard(props) {
     let src;
 
     //On vérifie si gif et le chemin renvoient quelque chose, si oui src = le chemin du gif, sinon src = le chemin d'un png
-    gif &&
+    wiki &&
     pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.[
       orientation
     ]
@@ -49,7 +48,7 @@ export default function PokemonCard(props) {
 
     //setSourceImg prend les données de src et de orientation
     setSourceImg(src?.[orientation]);
-  }, [orientation, pokemon, gif]);
+  }, [orientation, pokemon, wiki]);
 
   //function onClick -> si orientation a comme valeur front_default, alors il devient back_default et inversement
   const toggleGifOrientation = () =>
@@ -59,19 +58,12 @@ export default function PokemonCard(props) {
 
   return (
     <div className="containerCard">
-      <div style={{ backgroundColor: bgColor }} className="pokemon-card">
-        <h3>{pokemon.name}</h3>
-        {pokemon.types?.map((e, key) => (
-          <img
-          key={key}
-         // If you want an interactive svg, use either <iframe> or <object>.
-          src={bug}
-          alt={e.type.name}
-          />
-      ))}
+      <div style={{ backgroundColor: bgColor, backgroundImg: bgImg}} className="pokemon-card">
+        <h3>{pokemon.name}<TypeIcons pokemon={pokemon} /></h3>
+      
         <div className="img">
           {/* On vérifie si gif est true et si le chemin renvoi quelque chose, ? renvoi undefined au lieu de faire bug */}
-          {gif &&
+          {wiki &&
           pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated
             ?.front_default ? (
             <img
@@ -98,6 +90,9 @@ export default function PokemonCard(props) {
         <p>Height: {pokemon.height / 10} m</p>
         <p>Weight: {pokemon.weight / 10} kg</p>
       </div>
+      {wiki && (
+        <PokemonWiki pokemon={pokemon} />
+      )}
     </div>
   );
 }

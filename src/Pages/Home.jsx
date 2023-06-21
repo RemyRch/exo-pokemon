@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import PokemonCard from "../Components/PokemonCard";
+import PokemonCard from "../Components/pokemon-card/PokemonCard";
 import { Link } from "react-router-dom";
-import { PokemonsContext } from "../Context/pokemonsContext";
+import { PokemonsContext } from "../Context/PokemonsContext";
 
 
 export default function Home() {
@@ -10,17 +10,15 @@ export default function Home() {
   const { pokemons } = useContext(PokemonsContext);
 
   return (
-    <div className="containerList">
-      <ul>
+    <section className="cards-container">
         {pokemons?.map((pokemon) => (
-          <li key={pokemon.name}>
+          <div className="cards" key={pokemon.name}>
             <Link to={`/pokemon/${pokemon.id}`}>
               <PokemonCard id={pokemon.id} />
             </Link>
-          </li>
+          </div>
         ))}
-      </ul>
-    </div>
+    </section>
   );
 }
 
