@@ -47,102 +47,27 @@ export const PokemonWiki = (props) => {
   const actualizeSensibilities = (pokemon) => {
     const newSensibilities = initialRelations;
     pokemon.types?.forEach((type) => {
-        fetch(`https://pokeapi.co/api/v2/type/${type.type.name}/`)
+      fetch(`https://pokeapi.co/api/v2/type/${type.type.name}/`)
         .then((response) => response.json())
         .then((data) => {
-            // {
-            //     "damage_relations": {
-            //       "double_damage_from": [
-            //         {
-            //           "name": "ground",
-            //           "url": "https://pokeapi.co/api/v2/type/5/"
-            //         },
-            //         {
-            //           "name": "psychic",
-            //           "url": "https://pokeapi.co/api/v2/type/14/"
-            //         }
-            //       ],
-            //       "double_damage_to": [
-            //         {
-            //           "name": "grass",
-            //           "url": "https://pokeapi.co/api/v2/type/12/"
-            //         },
-            //         {
-            //           "name": "fairy",
-            //           "url": "https://pokeapi.co/api/v2/type/18/"
-            //         }
-            //       ],
-            //       "half_damage_from": [
-            //         {
-            //           "name": "fighting",
-            //           "url": "https://pokeapi.co/api/v2/type/2/"
-            //         },
-            //         {
-            //           "name": "poison",
-            //           "url": "https://pokeapi.co/api/v2/type/4/"
-            //         },
-            //         {
-            //           "name": "bug",
-            //           "url": "https://pokeapi.co/api/v2/type/7/"
-            //         },
-            //         {
-            //           "name": "grass",
-            //           "url": "https://pokeapi.co/api/v2/type/12/"
-            //         },
-            //         {
-            //           "name": "fairy",
-            //           "url": "https://pokeapi.co/api/v2/type/18/"
-            //         }
-            //       ],
-            //       "half_damage_to": [
-            //         {
-            //           "name": "poison",
-            //           "url": "https://pokeapi.co/api/v2/type/4/"
-            //         },
-            //         {
-            //           "name": "ground",
-            //           "url": "https://pokeapi.co/api/v2/type/5/"
-            //         },
-            //         {
-            //           "name": "rock",
-            //           "url": "https://pokeapi.co/api/v2/type/6/"
-            //         },
-            //         {
-            //           "name": "ghost",
-            //           "url": "https://pokeapi.co/api/v2/type/8/"
-            //         }
-            //       ],
-            //       "no_damage_from": [
-                    
-            //       ],
-            //       "no_damage_to": [
-            //         {
-            //           "name": "steel",
-            //           "url": "https://pokeapi.co/api/v2/type/9/"
-            //         }
-            //       ]
-            //     }
-            //     }
-            data.damage_relations.double_damage_from.forEach((type) => {
-                newSensibilities[type.name] = newSensibilities[type.name] * 2;
-            })
-            data.damage_relations.half_damage_from.forEach((type) => {
-                newSensibilities[type.name] = newSensibilities[type.name] * 0.5;
-            })
-            data.damage_relations.no_damage_from.forEach((type) => {
-                newSensibilities[type.name] = newSensibilities[type.name] * 0;
-            })
-            setSensibilities(newSensibilities);
-                
+          data.damage_relations.double_damage_from.forEach((type) => {
+            newSensibilities[type.name] = 2;
+          });
+          data.damage_relations.half_damage_from.forEach((type) => {
+            newSensibilities[type.name] = 0.5;
+          });
+          data.damage_relations.no_damage_from.forEach((type) => {
+            newSensibilities[type.name] = 0;
+          });
+          setSensibilities(newSensibilities);
         });
     });
-    };
+  };
 
-    const capitalizeFirstLetter = (string) => {
-        if(string === undefined) return;
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-                
+  const capitalizeFirstLetter = (string) => {
+    if (string === undefined) return;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   //ce useEffect gère le fetch et le bgColor
   useEffect(() => {
@@ -180,75 +105,106 @@ export const PokemonWiki = (props) => {
   }, [orientation, pokemon]);
 
   return (
-    <div className="pokemon-wiki" >
-        
-        <header style={{ backgroundColor: bgColor }}>
-            <h3>
-                {capitalizeFirstLetter(pokemon.name)}
-            </h3>
-            <div className="types-img">
-                <TypeIcons pokemon={pokemon} />
+    <div className="pokemon-wiki">
+      <header style={{ backgroundColor: bgColor }}>
+        <h3>{capitalizeFirstLetter(pokemon.name)}</h3>
+        <div className="types-img">
+          <TypeIcons pokemon={pokemon} />
+        </div>
+      </header>
+
+      <main>
+        <div className="main-container">
+          <div className="img">
+            {pokemon.sprites?.versions?.["generation-v"]?.["black-white"]
+              ?.animated?.front_default ? (
+              <img
+                onClick={toggleGifOrientation}
+                src={sourceImg}
+                alt={pokemon.name}
+              />
+            ) : (
+              <img
+                onClick={toggleGifOrientation}
+                src={sourceImg}
+                alt={pokemon.name}
+              />
+            )}
+          </div>
+          <div
+            className="arrow-left"
+            style={{ borderRight: `100px solid ${bgColor}` }}
+          ></div>
+          <div className="informations" style={{ backgroundColor: bgColor }}>
+            <div className="infos">
+              {pokemon.types?.length > 1 ? <h4>Types :</h4> : <h4>Type :</h4>}
+              <div className="types-itm">
+                {pokemon.types?.map(({ type }) => (
+                  <span key={uniqid()}>{capitalizeFirstLetter(type.name)}</span>
+                ))}
+              </div>
             </div>
-        </header>
 
-        <main>
-            <div className="img" >
-                {pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated
-                    ?.front_default ? (
-                    <img
-                    onClick={toggleGifOrientation}
-                    src={sourceImg}
-                    alt={pokemon.name}
-                    />
-                ) : (
-                    <img
-                    onClick={toggleGifOrientation}
-                    src={sourceImg}
-                    alt={pokemon.name}
-                    />
-                )}
+            <div className="infos">
+              <h4>Height :</h4>
+              <span>{pokemon.height / 10} m</span>
             </div>
 
-            <div className="content" style={{ backgroundColor: bgColor }}>
+            <div className="infos">
+              <h4>Weight :</h4>
+              <span>{pokemon.weight / 10} kg</span>
+            </div>
 
-                <div className="infos">
-                    <h4>Types</h4>
-                    <div className="types-itm">
-                        {pokemon.types?.map(({ type }) => <span key={uniqid()}>{capitalizeFirstLetter(type.name)}</span>)}
-                    </div>
-                </div>
-                
-                <div className="infos">
-                    <h4>Height :</h4>
-                    <span>{pokemon.height / 10} m</span>
-                </div>
+            <div className="infos">
+              <h4>Abilities :</h4>
+              <div className="abilities">
+                {pokemon.abilities?.map(({ ability }) => (
+                  <span key={uniqid()}>
+                    {capitalizeFirstLetter(ability.name)}
+                    <br/>
+                  </span> 
+               
+                ))}
+              </div>
+            </div>
 
-                <div className="infos">
-                    <h4>Weight :</h4>
-                    <span>{pokemon.weight / 10} kg</span>
-                </div>
-                
-                <ul>
+          </div>
+
+        </div>
+
+        <div className="content">
+          <table>
+            <thead style={{ backgroundColor: bgColor }}>
+              <tr>
+                <th>Faiblesse</th>
+                <th>Neutre</th>
+                <th>Force</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Test</td>
+                <td>Test</td>
+                <td>Test</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* <ul>
                     {Object.keys(sensibilities).map((key) => {
                         return (
                             <li key={uniqid()}>
-                            <span>{key}</span>
-                            <span>{sensibilities[key]}</span>
+                                <span>{key}</span>
+                                <span>{sensibilities[key]}</span>
                             </li>
                         );
                     })}
                     
-                </ul>
-            </div>
+                </ul> */}
+        </div>
+      </main>
 
-
-        </main>
-
-        <footer>
-
-            
-
-        </footer>      
+      <footer></footer>
     </div>
   );
 };
