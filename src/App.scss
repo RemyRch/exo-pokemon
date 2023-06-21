@@ -8,6 +8,8 @@
 
 #root {
   width: 100%;
+  background-image: linear-gradient(rgb(255, 224, 183, 0.8), rgb(255, 224, 183, 0.8)), url('https://cdn-icons-png.flaticon.com/512/868/868596.png');
+  background-size: 20%;
 }
 
 #main {
@@ -17,29 +19,6 @@
 ul {
   list-style-type: none;
 }
-
-// nav{
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  // width: 100%;
-  // height: 10vh;
-  // background-color: #333;
-  // color: #fff;
-  // padding: 0 20px;
-  // box-sizing: border-box;
-  // z-index: 100;
-
-  // display: flex;
-  // align-items: center;
-  // justify-content: space-around;
-
-  // .left{
-  //   display: flex;
-  //   gap: 20px;
-  // }
-// }
-
 
 .cards-container {
 
@@ -51,13 +30,30 @@ ul {
   justify-content: center;
   padding: 50px;
 
-  .cards{
+  .card-pokemon{
     display: inline-block;
     font-family:'VT323', monospace;
     border-radius:2em;
     border: rgb(0, 0, 0) 3px solid;
-
     width: 300px;
+    padding: 10px;
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .types {
+        display: flex;
+        gap: 10px;
+      }
+    }
+
+    main {
+    }
+
+    footer {
+
+    }
   
     h3 {
       background-color: #232323;
@@ -86,17 +82,91 @@ ul {
   }
 }
 
+.pokemon-wiki {
+
+  width: 75%;
+  margin: auto;
+  padding: 30px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    h3 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin: 15px;
+    }
+
+    border-radius: 0.5em;
+
+    .types-img {
+      display: flex;
+      gap: 10px;
+      img {
+        height: 2rem !important;
+      }
+    }
+  }
+
+  main {
+
+    
+    .img {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 0;
+      background-color:white;
+      border-radius: 0.5em;
+
+      img {
+        width: 250px;
+        height: auto;
+      }
+    }
+
+    .content {
+
+      border-radius: 0.5em;
+      padding: 20px;
+      margin-top: 20px;
+
+      h4 {
+        margin: 0;
+      }
+
+      .infos {
+        padding-top: 10px;
+
+        display: flex;
+        gap: 10px;
+
+        .types-itm {
+          display: flex;
+          gap: 10px;
+        }
+      }
+
+    }
 
 
-.img {
-  background-color:white;
-  width:50%;
-  padding:8%;
-  margin:auto;
-  border-radius:0.5em;
-  border:#232323 3px solid;
+
+  }
+
+  footer {
+
+
+
+  }
+
 }
-
 
 @keyframes logo-spin {
   from {

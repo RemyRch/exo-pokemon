@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import PokemonCard from "../Components/pokemon-card/PokemonCard";
 import { NextPokemon, PreviousPokemon } from "./Pokemon.styles";
+import { StyledPokemonCard } from "../Components/pokemon-card/PokemonCard.styles";
+import { PokemonWiki } from "../Components/pokemon-wiki/PokemonWiki";
 
 export default function Pokemon() {
   // useParams récupère les paramètres (id) en l'occurence
@@ -20,7 +22,9 @@ export default function Pokemon() {
           />
         </PreviousPokemon>
       )}
-      <PokemonCard id={id} wiki />
+
+      <PokemonWiki id={id} />
+
       {parseInt(id) < max && (
         <NextPokemon to={`/pokemon/${parseInt(id) + 1}`}>
           <img

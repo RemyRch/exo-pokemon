@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { colours } from "../../constants/ColorsType";
 import { TypeIcons } from "./../type-icons/TypeIcons";
 import { PokemonWiki } from "./../pokemon-wiki/PokemonWiki";
+import * as Styles from "./PokemonCard.styles";
 
 export default function PokemonCard(props) {
   const { id, wiki } = props;
@@ -30,14 +31,13 @@ export default function PokemonCard(props) {
       });
   }, [id]);
 
-
   //ce useEffect gère les images front et back
   useEffect(() => {
     //On déclare src
     let src;
 
     //On vérifie si gif et le chemin renvoient quelque chose, si oui src = le chemin du gif, sinon src = le chemin d'un png
-    wiki &&
+
     pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.[
       orientation
     ]
@@ -48,24 +48,57 @@ export default function PokemonCard(props) {
 
     //setSourceImg prend les données de src et de orientation
     setSourceImg(src?.[orientation]);
-  }, [orientation, pokemon, wiki]);
+  }, [orientation, pokemon]);
 
   //function onClick -> si orientation a comme valeur front_default, alors il devient back_default et inversement
   const toggleGifOrientation = () =>
     setOrientation(
-      orientation === "front_default" && pokemon.sprites?.back_default ? "back_default" : "front_default"
+      orientation === "front_default" && pokemon.sprites?.back_default
+        ? "back_default"
+        : "front_default"
     );
 
   return (
-    <div className="containerCard">
-      <div style={{ backgroundColor: bgColor, backgroundImg: bgImg}} className="pokemon-card">
-        <h3>{pokemon.name}<TypeIcons pokemon={pokemon} /></h3>
-      
-        <div className="img">
-          {/* On vérifie si gif est true et si le chemin renvoi quelque chose, ? renvoi undefined au lieu de faire bug */}
-          {wiki &&
-          pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated
-            ?.front_default ? (
+    <Styles.PokemonCardContainer style={{ backgroundColor: bgColor, backgroundImg: bgImg }}>
+     
+        <header>
+          <h3>{pokemon.name}</h3>
+          <div className="types">
+            <TypeIcons pokemon={pokemon} />
+          </div>
+        </header>
+
+        <main>
+          <div className="imgBg">
+            {pokemon.sprites?.versions?.["generation-v"]?.["black-white"]
+              ?.animated?.front_default ? (
+              <img className="imgPkmnCards"
+                onClick={toggleGifOrientation}
+                src={sourceImg}
+                alt={pokemon.name}
+              />
+            ) : (
+              <img className="imgPkmnCards"
+                onClick={toggleGifOrientation}
+                src={sourceImg}
+                alt={pokemon.name}
+              />
+            )}
+          </div>
+        </main>
+
+        <footer>
+
+          <p>Height: {pokemon.height / 10} m</p>
+          <p>Weight: {pokemon.weight / 10} kg</p>
+
+        </footer>
+    
+    </Styles.PokemonCardContainer>
+  );
+  {
+    /* <div className="img">
+          {pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default ? (
             <img
               onClick={toggleGifOrientation}
               src={sourceImg}
@@ -78,21 +111,17 @@ export default function PokemonCard(props) {
               alt={pokemon.name}
             />
           )}
-        </div>
-        <p>
-          Types:{" "}
-          {pokemon.types
-            ?.map((type) => {
-              return type.type.name;
-            })
-            .join(", ")}
-        </p>
-        <p>Height: {pokemon.height / 10} m</p>
-        <p>Weight: {pokemon.weight / 10} kg</p>
-      </div>
-      {wiki && (
-        <PokemonWiki pokemon={pokemon} />
-      )}
-    </div>
-  );
+         </div>
+         <p>
+           Types:{" "}
+           {pokemon.types
+              ?.map((type) => {
+               return type.type.name;
+             })
+             .join(", ")}
+         </p>
+         <p>Height: {pokemon.height / 10} m</p>
+         <p>Weight: {pokemon.weight / 10} kg</p>
+       </div>   */
+  }
 }

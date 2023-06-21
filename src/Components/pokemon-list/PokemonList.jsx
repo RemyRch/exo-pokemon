@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+export const StyledList = styled.ul``;
 
 export const PokemonList = ({ pokemons, search }) => {
   if (!pokemons) {
