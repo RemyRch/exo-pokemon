@@ -176,6 +176,8 @@ export const PokemonWiki = (props) => {
             />
 
             <div className="informations" style={{ backgroundColor: bgColor }}>
+            <div className="top">
+              
               <div className="infos">
                 {pokemon.types?.length > 1 ? <h4>Types :</h4> : <h4>Type :</h4>}
                 <div className="types-itm">
@@ -187,27 +189,35 @@ export const PokemonWiki = (props) => {
                 </div>
               </div>
 
-              <div className="infos">
-                <h4>Height :</h4>
-                <span>{pokemon.height / 10} m</span>
+              
+                <div className="infos">
+                  <h4>Height :</h4>
+                  <span>{pokemon.height / 10} m</span>
+                </div>
+
               </div>
 
-              <div className="infos">
-                <h4>Weight :</h4>
-                <span>{pokemon.weight / 10} kg</span>
-              </div>
+              <div className="bottom">
 
-              <div className="infos">
-                <h4>Abilities :</h4>
-                <div className="abilities">
-                  {pokemon.abilities?.map(({ ability }) => (
-                    <span key={uniqid()}>
-                      {capitalizeFirstLetter(ability.name)}
-                      <br />
-                    </span>
-                  ))}
+                <div className="infos">
+                  <h4>Weight :</h4>
+                  <span>{pokemon.weight / 10} kg</span>
+                </div>
+
+                <div className="infos">
+                  <h4>Abilities :</h4>
+                  <div className="abilities">
+                    {pokemon.abilities?.map(({ ability }) => (
+                      <span key={uniqid()}>
+                        {capitalizeFirstLetter(ability.name)}
+                        <br />
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
+
+
             </div>
           </div>
 

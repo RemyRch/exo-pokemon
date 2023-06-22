@@ -5,13 +5,23 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Nav } from "./Components/navbar/Navbar.styles";
 import { PokemonsProvider } from "./Provider/PokemonsProvider";
 import { Team } from "./Pages/Team";
+import { MediaPlayer } from "./Components/media-player/MediaPlayer";
+import { useEffect } from "react";
 
 function App() {
+
+  useEffect(() => {
+    String.prototype.capitalizeFirst = function () {
+      return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+  }, [])
+
   return (
     <>
       {/*BrowserRouter Permet d'afficher dans l'historique, page par page  */}
       <BrowserRouter>
         <PokemonsProvider>
+          <MediaPlayer />
           <Nav />
           <main id="main">
             <Routes>

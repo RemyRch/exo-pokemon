@@ -13,6 +13,8 @@ export default function Home() {
   const { pokemons, page, setPage } = useContext(PokemonsContext);
   const max = 1110/20;
 
+  
+
   const handlePrevious = () => {
     if (page > 1) setPage(page - 1);
   };
@@ -27,11 +29,15 @@ export default function Home() {
   return (
     <section>
       <section className="cards-container">
-        {pokemons.map((pokemon) => (
+        {pokemons.length > 0 && pokemons.map((pokemon) => (
           <Link to={`/pokemon/${pokemon.id}`} key={pokemon.id}>
             <PokemonCard pokemon={pokemon} />
           </Link>
         ))}
+        { pokemons.length < 1 && <div className="loading">
+          <img src="/loading.gif" alt="" />
+          <h1>Loading...</h1>
+        </div> }
       </section>
       <PaginationContainer>
         <PreviousPage onClick={handlePrevious}>Previous</PreviousPage>

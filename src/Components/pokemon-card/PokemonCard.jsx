@@ -10,19 +10,13 @@ export default function PokemonCard(props) {
   const [bgColor, setBgColor] = useState("");
 
   useEffect(() => {
-    setBgColor(pokemon.types[pokemon.types.length - 1].color)
+    setBgColor(pokemon.types[0].color)
   }, [])
 
   return (
     <Styles.PokemonCardContainer style={{ backgroundColor: bgColor }}>
       <header>
-     
           <h3>{pokemon.name} <TypeIcons pokemon={pokemon} home /></h3>
-      
-{/*      
-        <div className="types">
-          <TypeIcons pokemon={pokemon} home />
-        </div> */}
       </header>
 
       <main>

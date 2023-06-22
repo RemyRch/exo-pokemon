@@ -63,11 +63,13 @@ export const PokemonCardContainer = styled.div`
       border-radius: 0.5em;
       margin:0.5em 0 0.5em 0
     }
-  
-  
+
 
     .imgBg {
         display:flex;
+        align-items:center;
+        justify-content: center;
+
         height: 250px;
         background-color:white;
         border:solid 3px black;
@@ -75,14 +77,8 @@ export const PokemonCardContainer = styled.div`
     }
     
     .imgPkmnCards{
-        margin-left:2em;
-        margin-top:1.5em;
-        justify-content:center;
-        align-items:center;
-        display:flex;
         width:80%;
         height:80%;
-        
      }
      
     img {

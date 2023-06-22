@@ -6,7 +6,7 @@ import uniqid from "uniqid";
 export const TypeIcons = ({ pokemon, home }) => {
   const getTypes = () => {
     if (home) {
-      return pokemon?.types.reverse();
+      return pokemon?.types;
     } else {
       return pokemon?.types;
     }
