@@ -27,11 +27,19 @@ export const PokemonCardContainer = styled.div`
 
     }
   
+    .name-and-type{
+      display:flex;
+      background-color: red;
+    }
     h3 {
       background-color: #232323;
-      width:30%;
+      padding:0.2em 1em;
       border-radius:0.5em;
       text-align:center;
+      display:flex;
+      align-items:center;
+      gap: 7.5px;
+      
     }
 
     .types{

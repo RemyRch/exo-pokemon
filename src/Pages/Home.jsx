@@ -11,9 +11,14 @@ import {
 export default function Home() {
   //On récupère pokemons qui est stocké dans le context qu'on a importé
   const { pokemons, page, setPage } = useContext(PokemonsContext);
+  const max = 1110/20;
 
-  const handlePrevious = () => setPage(page - 1);
-  const handleNext = () => setPage(page + 1);
+  const handlePrevious = () => {
+    if (page > 1) setPage(page - 1);
+  };
+  const handleNext = () => {
+    if (page < max)setPage(page + 1)
+  };
 
   useEffect(() => {
     setPage(1)
@@ -24,7 +29,7 @@ export default function Home() {
       <section className="cards-container">
         {pokemons.map((pokemon) => (
           <Link to={`/pokemon/${pokemon.id}`} key={pokemon.id}>
-            <PokemonCard id={pokemon.id} />
+            <PokemonCard pokemon={pokemon} />
           </Link>
         ))}
       </section>

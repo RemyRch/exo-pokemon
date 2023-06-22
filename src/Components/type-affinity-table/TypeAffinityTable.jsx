@@ -88,7 +88,6 @@ export const StyledTypeAffinityTable = styled(TypeAffinityTable)`
   h4 {
     color: white;
     justify-content: center;
-
     text-align: center;
     background-color: #232323;
     padding: 0.2em;

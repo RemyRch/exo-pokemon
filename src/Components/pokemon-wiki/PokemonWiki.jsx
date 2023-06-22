@@ -82,16 +82,25 @@ export const PokemonWiki = (props) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const handleAdd = () => {
+  const getPokemon = async (id) => {
+    const result = await fetch(`https://pokemons.mytoolsboard.com/api/pokemon/${id}`);
+    const pokemon = await result.json();
+    return pokemon;
+}
+
+  const handleAdd = async () => {
+
+    const pokemon = await getPokemon(id);
+
     const index = pokemonTeam.team.findIndex(
       (currentId) => currentId === parseInt(id)
     );
-    const pokemon = pokemons[id - 1].name
+    
     if (index === -1 && pokemonTeam.team.length < 6) {
       dispatch(addPokemon(id));
-      toast.success(`${capitalizeFirstLetter(pokemon)} added to team`);
+      toast.success(`${capitalizeFirstLetter(pokemon.name)} added to team`);
     } else if (index !== -1) {
-      toast.error(`${capitalizeFirstLetter(pokemon)} already in team`);
+      toast.error(`${capitalizeFirstLetter(pokemon.name)} already in team`);
     } else {
       toast.error("Team full");
     }
@@ -139,76 +148,77 @@ export const PokemonWiki = (props) => {
   return (
     <div className="pokemon-wiki">
       <header style={{ backgroundColor: bgColor }}>
-        <h3 className="wikiName">{capitalizeFirstLetter(pokemon.name)}</h3>
-        <div className="types-img">
-          <TypeIcons pokemon={pokemon} />
-        </div>
+        <h3 className="wikiName">{capitalizeFirstLetter(pokemon.name)}<TypeIcons pokemon={pokemon} /></h3>
       </header>
 
       <main>
-        <div className="main-container">
-          <div className="img">
-            {pokemon.sprites?.versions?.["generation-v"]?.["black-white"]
-              ?.animated?.front_default ? (
-              <img
-                onClick={toggleGifOrientation}
-                src={sourceImg}
-                alt={pokemon.name}
-              />
-            ) : (
-              <img
-                onClick={toggleGifOrientation}
-                src={sourceImg}
-                alt={pokemon.name}
-              />
-            )}
-          </div>
-          <div
-            className="arrow-left"
-            style={{ borderRight: `100px solid ${bgColor}` }}
-          />
+        <div className="main-and-prevnext">
+          <div className="main-container">
+            <div className="img">
+              {pokemon.sprites?.versions?.["generation-v"]?.["black-white"]
+                ?.animated?.front_default ? (
+                <img
+                  onClick={toggleGifOrientation}
+                  src={sourceImg}
+                  alt={pokemon.name}
+                />
+              ) : (
+                <img
+                  onClick={toggleGifOrientation}
+                  src={sourceImg}
+                  alt={pokemon.name}
+                />
+              )}
+            </div>
+            <div
+              className="arrow-left"
+              style={{ borderRight: `100px solid ${bgColor}` }}
+            />
 
-          <div className="informations" style={{ backgroundColor: bgColor }}>
-            <div className="infos">
-              {pokemon.types?.length > 1 ? <h4>Types :</h4> : <h4>Type :</h4>}
-              <div className="types-itm">
-                {pokemon.types?.map(({ type }) => (
-                  <span key={uniqid()}>{capitalizeFirstLetter(type.name)}</span>
-                ))}
+            <div className="informations" style={{ backgroundColor: bgColor }}>
+              <div className="infos">
+                {pokemon.types?.length > 1 ? <h4>Types :</h4> : <h4>Type :</h4>}
+                <div className="types-itm">
+                  {pokemon.types?.map(({ type }) => (
+                    <span key={uniqid()}>
+                      {capitalizeFirstLetter(type.name)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="infos">
+                <h4>Height :</h4>
+                <span>{pokemon.height / 10} m</span>
+              </div>
+
+              <div className="infos">
+                <h4>Weight :</h4>
+                <span>{pokemon.weight / 10} kg</span>
+              </div>
+
+              <div className="infos">
+                <h4>Abilities :</h4>
+                <div className="abilities">
+                  {pokemon.abilities?.map(({ ability }) => (
+                    <span key={uniqid()}>
+                      {capitalizeFirstLetter(ability.name)}
+                      <br />
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-
-            <div className="infos">
-              <h4>Height :</h4>
-              <span>{pokemon.height / 10} m</span>
-            </div>
-
-            <div className="infos">
-              <h4>Weight :</h4>
-              <span>{pokemon.weight / 10} kg</span>
-            </div>
-
-            <div className="infos">
-              <h4>Abilities :</h4>
-              <div className="abilities">
-                {pokemon.abilities?.map(({ ability }) => (
-                  <span key={uniqid()}>
-                    {capitalizeFirstLetter(ability.name)}
-                    <br />
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
-        </div>
 
-        <div className="content">
-          <StyledTypeAffinityTable
-            bgColor={bgColor}
-            sensibilities={sensibilities}
-          />
+          <div className="content">
+            <StyledTypeAffinityTable
+              bgColor={bgColor}
+              sensibilities={sensibilities}
+            />
 
-          <button onClick={handleAdd}>Add to team</button>
+            <button onClick={handleAdd}>Add to team</button>
+          </div>
         </div>
       </main>
 

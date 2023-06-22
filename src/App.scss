@@ -91,9 +91,12 @@ ul {
 .wikiName {
   color: white;
   background-color: #232323;
-  width: 28%;
   border-radius: 0.5em;
   text-align: center;
+  display: flex;
+  align-items: center;
+  padding:0.2em 0.5em;
+  gap: 10px;
 }
 
 .pokemon-wiki {
@@ -132,18 +135,23 @@ ul {
   }
 
   main {
+    .main-and-prevnext {
+      display: flex;
+      flex-direction:column;
+
+    }
     .main-container {
+      height:430px;
       display: flex;
       justify-content: space-between;
       background-color: white;
       object-fit: contain;
       align-items: center;
       border-radius:1em;
-      box-sizing: content-box;
 
       .arrow-left {
-        border-top: 200px solid transparent;
-        border-bottom: 200px solid transparent;
+        border-top: 215px solid transparent;
+        border-bottom: 215px solid transparent;
         background-color: white;
       }
 
@@ -169,6 +177,7 @@ ul {
       }
 
       .informations {
+        // padding:15px 0;
         height: 100%;
         width: 40%;
         border-top-right-radius: 1em;
@@ -183,7 +192,7 @@ ul {
           background-color: #232323;
           width: 35%;
        
-          padding: 0.42em 0.2em 0.2em 0.5em;
+          padding: 0.42em 1.8em 0.2em 0.5em;
           border-radius: 0.5em;
           margin: 0.5em;
           gap: 10px;

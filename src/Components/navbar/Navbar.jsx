@@ -3,9 +3,9 @@ import { useEffect, useRef, useContext } from "react";
 import { PokemonsContext } from "../../Context/PokemonsContext";
 import { useSelector } from "react-redux";
 
-// import { myStyle } from "./NavStyles";
-
 import Select from 'react-select'
+import Async, { useAsync } from 'react-select/async';
+import AsyncSelect from 'react-select/async';
 
 export const Navbar = ({ className }) => {
 
@@ -28,6 +28,12 @@ export const Navbar = ({ className }) => {
     </div>
   );
 
+  const promiseOptions = (inputValue) => {
+
+    console.log(inputValue);
+
+  }
+
   const onChange = ({ value }) => navigate(`/pokemon/${value}`)
 
 
@@ -46,9 +52,12 @@ export const Navbar = ({ className }) => {
           </NavLink>
         </button>)}
       </div>
-      <Select 
-        options={options} 
-        formatOptionLabel={formatOptionLabel}
+
+
+      <AsyncSelect 
+        // options={options} 
+        // formatOptionLabel={formatOptionLabel}
+        loadOptions={promiseOptions}
         onChange={onChange}
         placeholder="Rechercher un pokemon"
         styles={{
@@ -75,6 +84,8 @@ export const Navbar = ({ className }) => {
           }),
         }}
       />
+
+
     </nav>
   );
 }

@@ -4,7 +4,7 @@ import Pokemon from "./Pages/Pokemon";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Nav } from "./Components/navbar/Navbar.styles";
 import { PokemonsProvider } from "./Provider/PokemonsProvider";
-import {Team} from "./Pages/Team";
+import { Team } from "./Pages/Team";
 
 function App() {
   return (
