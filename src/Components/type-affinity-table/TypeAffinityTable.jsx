@@ -13,10 +13,10 @@ export const TypeAffinityTable = ({ className, bgColor, sensibilities }) => {
         color = "#FFAAAA";
         break;
       case 0.25:
-        color = "#AAFFAA";
+        color = "#3AF24B";
         break;
       case 0.5:
-        color = "#3AF24B";
+        color = "#AAFFAA";
         break;
       case 0:
         color = "#AAAAAA";
