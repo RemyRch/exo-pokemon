@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useContext } from "react";
 import { PokemonsContext } from "../../Context/PokemonsContext";
+import { useSelector } from "react-redux";
 
 // import { myStyle } from "./NavStyles";
 
@@ -10,6 +11,7 @@ export const Navbar = ({ className }) => {
 
   const { pokemons } = useContext(PokemonsContext)
   const navigate = useNavigate()
+  const pokemonTeam = useSelector(state => state.pokemonTeam)
 
   const options = pokemons.map((pokemon) => {
     return { value: pokemon.id, label: pokemon.name }
@@ -38,11 +40,11 @@ export const Navbar = ({ className }) => {
             Home
           </NavLink>
         </button>
-        <button>
-          <NavLink to="/pokemon/1">
-            Pokemon
+        {(pokemonTeam.team.length > 0) && (<button>
+          <NavLink to="/team">
+            Team
           </NavLink>
-        </button>
+        </button>)}
       </div>
       <Select 
         options={options} 

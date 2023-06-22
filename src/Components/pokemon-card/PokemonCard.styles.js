@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import  PokemonCard  from "./PokemonCard";
+import PokemonCard from "./PokemonCard";
 
 export const StyledPokemonCard = styled(PokemonCard)``;
 
@@ -36,13 +36,14 @@ export const PokemonCardContainer = styled.div`
 
     .types{
       display:flex;
-      height: 25px;
+      height: 30px;
+      padding-top:0.2em;
       padding-bottom:0.2em;
       align-items:center;
       justify-content: center;
       gap: 7.5px;
       background-color: #232323;
-      width:20%;
+      width:28%;
       border-radius:0.5em;
       text-align:center;
     }
@@ -86,4 +87,4 @@ export const PokemonCardContainer = styled.div`
       color:white;
       text-transform:uppercase;
     }
-  }`
+  }`;

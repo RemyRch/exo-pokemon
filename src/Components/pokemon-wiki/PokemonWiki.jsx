@@ -1,7 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { colours } from "../../constants/ColorsType";
 import { TypeIcons } from "./../type-icons/TypeIcons";
 import uniqid from "uniqid";
+import { useDispatch, useSelector } from "react-redux";
+import { addPokemon } from "../../Slice/pokemonTeam";
+import {
+  TypeAffinityTable,
+  StyledTypeAffinityTable,
+} from "./../type-affinity-table/TypeAffinityTable";
+import { toast } from "react-toastify";
+import { PokemonsContext } from "../../Context/PokemonsContext";
 
 export const PokemonWiki = (props) => {
   const { id } = props;
@@ -27,6 +35,9 @@ export const PokemonWiki = (props) => {
     fairy: 1,
   };
 
+  const dispatch = useDispatch();
+  const pokemonTeam = useSelector((state) => state.pokemonTeam);
+
   const [sensibilities, setSensibilities] = useState(initialRelations);
 
   const [pokemon, setPokemon] = useState([]);
@@ -35,6 +46,8 @@ export const PokemonWiki = (props) => {
 
   const [sourceImg, setSourceImg] = useState("");
   const [orientation, setOrientation] = useState("front_default");
+
+  const { pokemons } = useContext(PokemonsContext);
 
   //function onClick -> si orientation a comme valeur front_default, alors il devient back_default et inversement
   const toggleGifOrientation = () =>
@@ -51,13 +64,13 @@ export const PokemonWiki = (props) => {
         .then((response) => response.json())
         .then((data) => {
           data.damage_relations.double_damage_from.forEach((type) => {
-            newSensibilities[type.name] = 2;
+            newSensibilities[type.name] *= 2;
           });
           data.damage_relations.half_damage_from.forEach((type) => {
-            newSensibilities[type.name] = 0.5;
+            newSensibilities[type.name] *= 0.5;
           });
           data.damage_relations.no_damage_from.forEach((type) => {
-            newSensibilities[type.name] = 0;
+            newSensibilities[type.name] *= 0;
           });
           setSensibilities(newSensibilities);
         });
@@ -67,6 +80,21 @@ export const PokemonWiki = (props) => {
   const capitalizeFirstLetter = (string) => {
     if (string === undefined) return;
     return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const handleAdd = () => {
+    const index = pokemonTeam.team.findIndex(
+      (currentId) => currentId === parseInt(id)
+    );
+    const pokemon = pokemons[id - 1].name
+    if (index === -1 && pokemonTeam.team.length < 6) {
+      dispatch(addPokemon(id));
+      toast.success(`${capitalizeFirstLetter(pokemon)} added to team`);
+    } else if (index !== -1) {
+      toast.error(`${capitalizeFirstLetter(pokemon)} already in team`);
+    } else {
+      toast.error("Team full");
+    }
   };
 
   //ce useEffect gère le fetch et le bgColor
@@ -85,6 +113,10 @@ export const PokemonWiki = (props) => {
         actualizeSensibilities(data);
       });
   }, [id]);
+
+  useEffect(() => {
+    actualizeSensibilities(pokemon);
+  }, [pokemon]);
 
   //ce useEffect gère les images front et back
   useEffect(() => {
@@ -107,7 +139,7 @@ export const PokemonWiki = (props) => {
   return (
     <div className="pokemon-wiki">
       <header style={{ backgroundColor: bgColor }}>
-        <h3>{capitalizeFirstLetter(pokemon.name)}</h3>
+        <h3 className="wikiName">{capitalizeFirstLetter(pokemon.name)}</h3>
         <div className="types-img">
           <TypeIcons pokemon={pokemon} />
         </div>
@@ -134,7 +166,8 @@ export const PokemonWiki = (props) => {
           <div
             className="arrow-left"
             style={{ borderRight: `100px solid ${bgColor}` }}
-          ></div>
+          />
+
           <div className="informations" style={{ backgroundColor: bgColor }}>
             <div className="infos">
               {pokemon.types?.length > 1 ? <h4>Types :</h4> : <h4>Type :</h4>}
@@ -161,46 +194,21 @@ export const PokemonWiki = (props) => {
                 {pokemon.abilities?.map(({ ability }) => (
                   <span key={uniqid()}>
                     {capitalizeFirstLetter(ability.name)}
-                    <br/>
-                  </span> 
-               
+                    <br />
+                  </span>
                 ))}
               </div>
             </div>
-
           </div>
-
         </div>
 
         <div className="content">
-          <table>
-            <thead style={{ backgroundColor: bgColor }}>
-              <tr>
-                <th>Faiblesse</th>
-                <th>Neutre</th>
-                <th>Force</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Test</td>
-                <td>Test</td>
-                <td>Test</td>
-              </tr>
-            </tbody>
-          </table>
+          <StyledTypeAffinityTable
+            bgColor={bgColor}
+            sensibilities={sensibilities}
+          />
 
-          {/* <ul>
-                    {Object.keys(sensibilities).map((key) => {
-                        return (
-                            <li key={uniqid()}>
-                                <span>{key}</span>
-                                <span>{sensibilities[key]}</span>
-                            </li>
-                        );
-                    })}
-                    
-                </ul> */}
+          <button onClick={handleAdd}>Add to team</button>
         </div>
       </main>
 

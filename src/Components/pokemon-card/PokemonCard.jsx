@@ -38,13 +38,7 @@ export default function PokemonCard(props) {
 
     //On vérifie si gif et le chemin renvoient quelque chose, si oui src = le chemin du gif, sinon src = le chemin d'un png
 
-    pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.[
-      orientation
-    ]
-      ? (src =
-          pokemon.sprites?.versions?.["generation-v"]?.["black-white"]
-            ?.animated)
-      : (src = pokemon.sprites);
+   src = pokemon.sprites;
 
     //setSourceImg prend les données de src et de orientation
     setSourceImg(src?.[orientation]);
