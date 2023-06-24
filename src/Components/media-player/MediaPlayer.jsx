@@ -6,8 +6,10 @@ export const MediaPlayer = () => {
     const [player, setPlayer] = useState(document.querySelector(".media-player-audio"))
 
     const [audios, setAudios] = useState([
-        "generique.mp3",
-        "generique2.mp3"
+        "Anville Town.mp3",
+        "Cianwood City.mp3",
+        "Générique.mp3",
+        "Nacrene City.mp3",
     ])
 
     const [audio, setAudio] = useState()

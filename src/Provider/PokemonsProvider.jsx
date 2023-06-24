@@ -12,7 +12,7 @@ export const PokemonsProvider = ({ children }) => {
     (async () => {
 
       if(cache[page] === undefined) {
-        // await wait(2);
+        // await wait(3);
         const results = await fetch(`https://pokemons.mytoolsboard.com/api/pokemons?page=${page}`)
         const pokemons = await results.json();
         setPokemons(pokemons);

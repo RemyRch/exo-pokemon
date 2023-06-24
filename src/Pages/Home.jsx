@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import PokemonCard from "../Components/pokemon-card/PokemonCard";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PokemonsContext } from "../Context/PokemonsContext";
 import {
   PaginationContainer,
@@ -12,8 +12,6 @@ export default function Home() {
   //On récupère pokemons qui est stocké dans le context qu'on a importé
   const { pokemons, page, setPage } = useContext(PokemonsContext);
   const max = 1110/20;
-
-  
 
   const handlePrevious = () => {
     if (page > 1) setPage(page - 1);

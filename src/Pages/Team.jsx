@@ -45,7 +45,7 @@ export const Team = () => {
 
   return (
     <>
-      <h1>Team</h1>
+      <h1 className="teamTitle">Team</h1>
       <section className="cards-container">
         {pokemons.map(pokemon => (
           <div key={uniqid()}>

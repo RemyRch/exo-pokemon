@@ -28,6 +28,58 @@ ul {
   list-style-type: none;
 }
 
+.sleep{
+  background-color: #c9bcf0!important;
+}
+
+.freeze {
+  background-color: #98D8D8!important;
+}
+
+.paralysis{
+  background-color: #F8D030!important;
+}
+
+.burn{
+  background-color: #F08030!important;
+}
+
+.poison{
+  background-color: #A040A0!important;
+}
+
+.pvStatus{
+  display:flex;
+
+  .status{
+    margin-left:1em;
+    background-color: #232323;
+    color:white;
+    padding:0 0.3em 0 0.3em;
+    border-radius: 0.5em;
+  }
+}
+
+
+
+.statusBtn{
+  display:flex;
+  flex-wrap: wrap;
+  
+  
+  button {
+    margin:1em;
+    border: white 2px solid;
+    box-shadow: 0px 0px 5px black;
+  }
+
+}
+
+.captureBtn{
+  border: white 2px solid;
+  box-shadow: 0px 0px 5px black;
+}
+
 .cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -86,6 +138,136 @@ ul {
       color: white;
       text-transform: uppercase;
     }
+  }
+}
+
+.capture{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  position:relative;
+
+  .header {
+    width:20%;
+    border-radius: 0.7em;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    padding: 0.2em;
+    background-color: #232323;
+    margin: 1.5em 0;
+  
+    h4{
+      color:white;
+      background-color: #232323;
+      font-size:20px;
+      border-radius:0.5em;
+      margin: 0;
+      padding: 0;
+    }
+  
+    span{
+      color:white;
+      background-color: #232323;
+      font-size:20px;
+      border-radius:0.5em;
+      padding:0.1em;
+    }
+  }
+
+  .pv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+
+    #pvmax {
+      appearance: none;
+      height: 6px;
+      background-color: #000;
+      border-radius: 4px;
+      cursor: pointer;
+  
+      &::-webkit-slider-thumb {
+        appearance: none;
+        background-color: #FFF;
+        background-image: url('/public/pokeball.png');
+        background-size: 25px 25px;
+        background-repeat: no-repeat;
+        background-position: center;
+  
+        width: 20px; height: 20px;
+        border-radius: 50%;
+        // border: 2px solid #000;
+      }
+    }
+  }
+
+  .pokeballs {
+    display: flex;
+    gap: 20px;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #232323;
+      border: 2px solid #232323;
+
+      :hover {
+        background-color: white;
+        border: 2px solid grey;
+        border-radius: 5em;
+      }
+
+      img {
+        height: 50px;
+        width: 50px;
+      }
+    }
+  }
+  
+}
+
+.teamTitle{
+  display: flex;
+  justify-content:center;
+  position: relative;
+}
+
+.isActive{
+  background-color: white!important;
+}
+
+.capture-rate{
+  width:20%;
+  border-radius:0.5em;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:0 0 0.5em 0;
+  background-color: #232323;
+
+  h4{
+    color:white;
+    background-color: #232323;
+    font-size:20px;
+    border-radius:0.5em;
+    padding:0.2em;
+    margin: 0.3em 0 0 0;
+  }
+
+  span{
+    color:white;
+    background-color: #232323;
+    font-size:20px;
+    border-radius:0.5em;
+    padding:0.1em;
   }
 }
 
@@ -213,7 +395,7 @@ ul {
           background-color: #232323;
           width: 35%;
        
-          padding: 0.42em 1.8em 0.2em 0.5em;
+          padding: 0 1.8em 0.2em 0.5em;
           border-radius: 0.5em;
           margin: 0.5em;
           gap: 10px;

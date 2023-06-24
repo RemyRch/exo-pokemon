@@ -42,12 +42,14 @@ export const PokemonWiki = (props) => {
 
   const [pokemon, setPokemon] = useState([]);
   const [bgColor, setBgColor] = useState("");
-  const [bgImg, setBgImg] = useState("");
+
+  const [capturePercent, setCapturePercent] = useState(0);
+  const [PV, setPV] = useState(100);
+  const [pokeball, setPokeball] = useState(1);
+  const [status, setStatus] = useState("");
 
   const [sourceImg, setSourceImg] = useState("");
   const [orientation, setOrientation] = useState("front_default");
-
-  const { pokemons } = useContext(PokemonsContext);
 
   //function onClick -> si orientation a comme valeur front_default, alors il devient back_default et inversement
   const toggleGifOrientation = () =>
@@ -106,25 +108,109 @@ export const PokemonWiki = (props) => {
     }
   };
 
+  const testCapture = () => {
+
+    const random = Math.floor(Math.random() * 101);
+
+    if(random < capturePercent) {
+      handleAdd();
+    } else {
+      toast.error(`${capitalizeFirstLetter(pokemon.name)} escaped`);
+    }
+
+  }
+
+  const testAttack = (status) => {
+    const random = Math.floor(Math.random() * 101);
+    let attack = "";
+    switch(status) {
+      case "sleep":
+        attack = "Sleep powder";
+        break;
+      case "freeze":
+        attack = "Blizzard";
+        break;
+      case "paralysis":
+        attack = "Stun spore";
+        break;
+      case "burn":
+        attack = "Will-O-Wisp";
+        break;
+      case "poison":
+        attack = "Toxik";
+        break;
+      default:
+        attack = "Full heal";
+        toast.success(`Pokemon is healthy !`);
+        setStatus(status);
+    }
+
+    if(attack === "Full heal") return;
+    if(random > 75) {
+      toast.error(`${attack} missed`);
+    }
+    else {
+      toast.success(`Pokemon is ${status} !`) 
+      setStatus(status);
+    }
+  }
+
+  useEffect(() => {
+
+    ( async () => {
+
+      if(!pokemon) return;
+      let bonusStatus = 1;
+      switch(status) {
+        case "sleep":
+        case "freeze":
+          bonusStatus = 2.5;
+          break;
+        case "paralysis":
+        case "burn":
+        case "poison":
+          bonusStatus = 1.5;
+          break;
+        default:
+          bonusStatus = 1;
+      }
+
+      const PVmax = pokemon.stats?.[0].base_stat;
+      const a = (1 - (2/3*PV/PVmax)) * pokemon.captureRate * pokeball * bonusStatus;
+      const b = (65535/(255/a)**(3/16));
+      
+      const percent = Math.floor(Math.pow(b/65536, 4) * 100);
+
+      setCapturePercent((current) =>  (percent < 100 && pokeball != 255 ? current = percent : current = 100) );
+    })()
+
+
+  }, [pokeball, PV, status])
+  
   //ce useEffect gère le fetch et le bgColor
   useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
-      .then((response) => response.json())
-      .then((data) => {
-        setPokemon(data);
+    ( async () => {
+      const pokeResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
+      const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
 
-        //on cherche le 1er type du pokémon
-        const firstType = data.types?.[0].type.name;
+      let poke = await pokeResponse.json()
+      const species = await speciesResponse.json()
+      poke = {...poke, captureRate: species.capture_rate};
+      setPokemon((current) => (current = poke));
+      //on cherche le 1er type du pokémon
+      const firstType = poke.types?.[0].type.name;
+      //on set le background-color en fonction du type dans ColorsType
+      setBgColor(colours[firstType]);
+      actualizeSensibilities(poke);
+      setStatus("");
 
-        //on set le background-color en fonction du type dans ColorsType
-        setBgColor(colours[firstType]);
-
-        actualizeSensibilities(data);
-      });
+    })()
   }, [id]);
 
   useEffect(() => {
     actualizeSensibilities(pokemon);
+    document.getElementById("pvmax").max = pokemon.stats?.[0].base_stat
+    setPV(pokemon.stats?.[0].base_stat ?? 0)
   }, [pokemon]);
 
   //ce useEffect gère les images front et back
@@ -155,6 +241,7 @@ export const PokemonWiki = (props) => {
         <div className="main-and-prevnext">
           <div className="main-container">
             <div className="img">
+              
               {pokemon.sprites?.versions?.["generation-v"]?.["black-white"]
                 ?.animated?.front_default ? (
                 <img
@@ -227,7 +314,37 @@ export const PokemonWiki = (props) => {
               sensibilities={sensibilities}
             />
 
-            <button onClick={handleAdd}>Add to team</button>
+            <div className="capture">
+
+              <div className="header">
+                <h4>Capture rate :</h4>
+                <span>{pokemon.captureRate}</span>
+              </div>
+              
+              <div className="pvStatus">
+                <div className="pv">
+                  <span>PV : </span>
+                  <input type="range" id="pvmax" min="1" value={PV} onChange={({ target: { value } }) => { setPV(value) }} />
+                  <span>{PV}</span>
+                </div>
+                {status && <span className="statu">{status}</span>}
+              </div>
+              <div className="pokeballs">
+                <button onClick={() => { setPokeball((current) => {return current = 1}) }} className={pokeball == 1 ? "isActive" : ""}><img src="/pokeballs/poke.png" alt="pokeball" /></button> 
+                <button onClick={() => { setPokeball((current) => { return current = 1.5 }) }} className={pokeball == 1.5 ? "isActive" : ""}><img src="/pokeballs/great.png" alt="greatball" /></button>
+                <button onClick={() => { setPokeball((current) => { return current = 2 }) }} className={pokeball == 2 ? "isActive" : ""}><img src="/pokeballs/ultra.png" alt="ultraball" /></button>
+                <button onClick={() => { setPokeball((current) => { return current = 255 }) }} className={pokeball == 255 ? "isActive" : ""}><img src="/pokeballs/master.png" alt="masterball" /></button>
+              </div>
+              <button onClick={testCapture} className="captureBtn">Test capture ({ capturePercent }%)</button>
+              <div className="statusBtn">
+                <button onClick={() => testAttack("sleep")} className="sleep">Sleep Powder</button>
+                <button onClick={() => testAttack("freeze")} className="freeze">Blizzard</button>
+                <button onClick={() => testAttack("paralysis")} className="paralysis">Stun Spore</button>
+                <button onClick={() => testAttack("burn")} className="burn">Will-O-Wisp</button>
+                <button onClick={() => testAttack("poison")} className="poison">Toxic</button>
+                <button onClick={() => testAttack("")}>Full heal</button>
+              </div>
+            </div>            
           </div>
         </div>
       </main>

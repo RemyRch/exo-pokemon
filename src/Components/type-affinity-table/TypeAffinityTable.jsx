@@ -33,7 +33,7 @@ export const TypeAffinityTable = ({ className, bgColor, sensibilities }) => {
     <div className={className}>
       <h4 className="typeAffinity">Type Affinity</h4>
 
-      <div className="affinities-container">
+      <div className="affinities-container" style={{backgroundColor: bgColor}}>
         {Object.keys(sensibilities).map((key) => {
           return (
             <div className="affinity" key={key}>
@@ -80,23 +80,10 @@ export const TypeAffinityTable = ({ className, bgColor, sensibilities }) => {
 };
 
 export const StyledTypeAffinityTable = styled(TypeAffinityTable)`
-  // border-collapse: collapse;
-  // width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // padding: 10px;
-
-  // td {
-  //   text-align: center;
-  //   border-radius: 0.5em;
-  // }
-
-  // span {
-  //   color: black;
-  //   font-size: 25px;
-  // }
-
+ 
   h4 {
     color: white;
     justify-content: center;
@@ -105,6 +92,7 @@ export const StyledTypeAffinityTable = styled(TypeAffinityTable)`
     padding: 0.2em;
     border-radius: 0.7em;
     width: 30%;
+    font-size: 1.5em;
   }
 
   .affinities-container {
@@ -112,7 +100,11 @@ export const StyledTypeAffinityTable = styled(TypeAffinityTable)`
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 25px;
+    background-color: white;
+    margin-bottom:1em;
+    border-radius: 0.5em;
+    padding: 1.5em 0;
 
     .affinity {
       display: flex;
@@ -121,13 +113,15 @@ export const StyledTypeAffinityTable = styled(TypeAffinityTable)`
       justify-content: center;
       gap: 10px;
       padding: 0.2em 10px;
+      width: 6%;
 
       .type-icon-card {
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 10px;
-        
+        border: 2px solid white;
+        box-shadow: 0px 0px 5px black;
         img {
           height: 25px !important;
         }
@@ -137,8 +131,11 @@ export const StyledTypeAffinityTable = styled(TypeAffinityTable)`
         background-color: red;
         border-radius: 0.5em;
         padding: 5px 12.5px;
+        font-size:25px;
         line-height: 20px;
         color: black;
+        // border: 1.5px solid black;
+
       }
     }
   }
